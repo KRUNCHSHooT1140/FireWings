@@ -8,6 +8,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
 use pocketmine\utils\Config;
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 
 class Main extends PluginBase implements Listener{
 	
@@ -43,10 +44,12 @@ class Main extends PluginBase implements Listener{
 			if(isset($this->players[$username])){
 				unset($this->players[$username]);
 				$sender->sendMessage($this->config["wings-off"]);
+                                $sender->getLevel()->broadcastLevelSoundEvent($sender, LevelSoundEventPacket::SOUND_POP, 500);
 				return true;
 			}else{
 				$this->players[$username] = true;
 				$sender->sendMessage($this->config["wings-on"]);
+                                $sender->getLevel()->broadcastLevelSoundEvent($sender, LevelSoundEventPacket::SOUND_POP, 500);
 				return true;
 			}
 		}else{
